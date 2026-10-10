@@ -1,0 +1,83 @@
+EVIDENCIA: las mismas pruebas medidas con tres herramientas de cobertura (suite de arranque: tests/ completa).
+
+==============================================================================
+1) coverage.py
+==============================================================================
+$ python3 -m coverage erase && python3 -m coverage run -m pytest -q
+...................x................                                     [100%]
+=========================== short test summary info ============================
+XFAIL tests/test_pawn.py::test_pawn_blocked_two_step_must_not_mark_en_passentable - BUG-02: marca is_en_passentable=True aunque el movimiento sea rechazado por camino bloqueado
+35 passed, 1 xfailed in 0.95s
+(duración: 1.57 s)
+
+$ python3 -m coverage report -m
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+board.py                93     73     34      0    16%   15-18, 21-25, 29-54, 57-72, 75-86, 89-104, 107-108, 111-121, 129
+game.py                 56     51     22      0     6%   5-6, 9-44, 47-72
+main.py                  3      0      0      0   100%
+pieces/__init__.py       0      0      0      0   100%
+pieces/bishop.py        23     18     10      0    15%   5-6, 9-25, 28-31
+pieces/king.py          23      5     10      1    76%   22-23, 28-31
+pieces/knight.py        22      5      6      1    71%   17-18, 27-30
+pieces/pawn.py          49      3     24      0    93%   64-67
+pieces/piece.py         30      1     10      0    98%   5
+pieces/queen.py         25     20     10      0    14%   5-6, 9-28, 31-34
+pieces/rook.py          23     16     10      0    21%   10-26, 29-32
+pieces/space.py          9      3      2      0    55%   10-13
+----------------------------------------------------------------
+TOTAL                  356    195    138      2    41%
+(duración: 0.13 s)
+
+==============================================================================
+2) pytest-cov (usa coverage.py por dentro)
+==============================================================================
+$ python3 -m pytest -q --cov=. --cov-branch --cov-report=term-missing
+...................x................                                     [100%]
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.12.3-final-0 ________________
+
+Name                 Stmts   Miss Branch BrPart  Cover   Missing
+----------------------------------------------------------------
+board.py                93     73     34      0    16%   15-18, 21-25, 29-54, 57-72, 75-86, 89-104, 107-108, 111-121, 129
+game.py                 56     51     22      0     6%   5-6, 9-44, 47-72
+main.py                  3      0      0      0   100%
+pieces/__init__.py       0      0      0      0   100%
+pieces/bishop.py        23     18     10      0    15%   5-6, 9-25, 28-31
+pieces/king.py          23      5     10      1    76%   22-23, 28-31
+pieces/knight.py        22      5      6      1    71%   17-18, 27-30
+pieces/pawn.py          49      3     24      0    93%   64-67
+pieces/piece.py         30      1     10      0    98%   5
+pieces/queen.py         25     20     10      0    14%   5-6, 9-28, 31-34
+pieces/rook.py          23     16     10      0    21%   10-26, 29-32
+pieces/space.py          9      3      2      0    55%   10-13
+----------------------------------------------------------------
+TOTAL                  356    195    138      2    41%
+=========================== short test summary info ============================
+XFAIL tests/test_pawn.py::test_pawn_blocked_two_step_must_not_mark_en_passentable - BUG-02: marca is_en_passentable=True aunque el movimiento sea rechazado por camino bloqueado
+35 passed, 1 xfailed in 0.99s
+(duración: 1.34 s)
+
+==============================================================================
+3) trace (librería estándar) - solo líneas, sin ramas
+==============================================================================
+$ python3 -m trace --count --missing --summary --coverdir=/tmp/tr --ignore-dir=/usr:/usr/local --module pytest -q
+35 passed, 1 xfailed in 2.47s
+lines   cov%   module   (path)
+   97    20%   board   (/tmp/fresh/board.py)
+   56     8%   game   (/tmp/fresh/game.py)
+   23    21%   pieces.bishop   (/tmp/fresh/pieces/bishop.py)
+   23    78%   pieces.king   (/tmp/fresh/pieces/king.py)
+   22    77%   pieces.knight   (/tmp/fresh/pieces/knight.py)
+   49    93%   pieces.pawn   (/tmp/fresh/pieces/pawn.py)
+   30    96%   pieces.piece   (/tmp/fresh/pieces/piece.py)
+   25    20%   pieces.queen   (/tmp/fresh/pieces/queen.py)
+   23    30%   pieces.rook   (/tmp/fresh/pieces/rook.py)
+    9    66%   pieces.space   (/tmp/fresh/pieces/space.py)
+    6   100%   test_main   (/tmp/fresh/tests/test_main.py)
+(duración: 3.00 s)
+
+Líneas no ejecutadas que marca trace en pieces/pawn.py (>>>>>>):
+>>>>>>         if self.is_white:
+>>>>>>             return("♟")
+>>>>>>             return("♙")
