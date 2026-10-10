@@ -1,0 +1,61 @@
+﻿board.py
+    M 27:4 Board.init_pieces - B (7)
+    M 74:4 Board.validate_turn_input - B (6)
+    M 56:4 Board.draw_board - A (5)
+    C 13:0 Board - A (4)
+    M 88:4 Board.validate_piece - A (4)
+    M 20:4 Board.build_board - A (3)
+    M 110:4 Board.move_piece - A (2)
+    M 14:4 Board.__init__ - A (1)
+    M 106:4 Board.validate_piece_move - A (1)
+    M 128:4 Board.check_king_exist - A (1)
+game.py
+    M 8:4 Game.new_game - B (8)
+    C 3:0 Game - B (6)
+    M 46:4 Game.player_turn - B (6)
+    M 4:4 Game.__init__ - A (1)
+main.py
+    F 3:0 main - A (1)
+pieces\bishop.py
+    M 8:4 Bishop.validate_move - B (6)
+    C 3:0 Bishop - A (4)
+    M 27:4 Bishop.draw_piece - A (2)
+    M 4:4 Bishop.__init__ - A (1)
+pieces\king.py
+    M 8:4 King.validate_move - B (7)
+    C 3:0 King - A (4)
+    M 27:4 King.draw_piece - A (2)
+    M 4:4 King.__init__ - A (1)
+pieces\knight.py
+    M 8:4 Knight.validate_move - B (6)
+    C 3:0 Knight - A (4)
+    M 22:4 Knight.validate_destination - A (3)
+    M 26:4 Knight.draw_piece - A (2)
+    M 4:4 Knight.__init__ - A (1)
+pieces\pawn.py
+    M 10:4 Pawn.validate_move - C (14)
+    C 3:0 Pawn - B (7)
+    M 63:4 Pawn.draw_piece - A (2)
+    M 4:4 Pawn.__init__ - A (1)
+pieces\piece.py
+    M 11:4 Piece.get_path - B (8)
+    C 1:0 Piece - A (5)
+    M 7:4 Piece.validate_is_space - A (2)
+    M 4:4 Piece.__init__ - A (1)
+pieces\queen.py
+    M 8:4 Queen.validate_move - B (8)
+    C 3:0 Queen - A (5)
+    M 30:4 Queen.draw_piece - A (2)
+    M 4:4 Queen.__init__ - A (1)
+pieces\rook.py
+    M 9:4 Rook.validate_move - B (7)
+    C 4:0 Rook - A (4)
+    M 28:4 Rook.draw_piece - A (2)
+    M 5:4 Rook.__init__ - A (1)
+pieces\space.py
+    C 3:0 Space - A (3)
+    M 9:4 Space.draw_piece - A (2)
+    M 6:4 Space.__init__ - A (1)
+
+47 blocks (classes, functions, methods) analyzed.
+Average complexity: A (3.723404255319149)
