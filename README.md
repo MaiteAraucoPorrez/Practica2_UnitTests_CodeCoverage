@@ -192,3 +192,65 @@ Contributions are welcome.
 3. Make your changes and keep code style consistent with the project.
 4. Run the game locally with `uv run main.py` to verify behavior.
 5. Open a pull request with a clear summary of what changed and why.
+
+
+# Pruebas unitarias y cobertura — ChessPython
+
+Práctica 2 · SIS-312.
+
+## Requisitos
+- Python 3.10 o superior (el proyecto original pide 3.14; las pruebas se verificaron en 3.12)
+- Git
+
+## 1. Instalar (PowerShell, Windows)
+```powershell
+git clone <https://github.com/MaiteAraucoPorrez/Practica2_UnitTests_CodeCoverage.git>
+cd <Practica2_UnitTests_CodeCoverage>
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+pip install -r requirements-dev.txt
+```
+Si PowerShell bloquea la activación: `Set-ExecutionPolicy -Scope Process RemoteSigned` y vuelve a activar.
+
+En Linux/macOS: `python3 -m venv .venv && source .venv/bin/activate && pip install -r requirements-dev.txt`.
+
+## 2. Ejecutar las pruebas (pytest)
+```powershell
+pytest
+```
+Una sola prueba o un archivo:
+```powershell
+pytest tests/test_pawn.py
+pytest -k "P08"
+```
+Las pruebas por propiedades (Hypothesis) se ejecutan con el resto; para ver cuántos casos genera cada una:
+```powershell
+pytest tests/test_properties.py -q --hypothesis-show-statistics
+```
+Las pruebas marcadas `xfail` documentan defectos conocidos del juego (ver `docs/PLAN_DE_PRUEBAS.md`, sección 8): no hacen fallar la suite.
+
+## 3. Medir la cobertura (coverage.py)
+```powershell
+coverage run -m pytest
+coverage report -m
+coverage html
+```
+- `coverage report -m` muestra cobertura de sentencias y de ramas y las líneas que faltan.
+- `coverage html` genera `htmlcov/index.html` (ábrelo en el navegador).
+- La configuración está en `.coveragerc` (cobertura de ramas activada; se excluye `tests/`).
+
+## 4. Complejidad ciclomática (radon)
+```powershell
+radon cc -s -a . --exclude "tests/*"
+```
+
+## 5. Experimento de herramientas (para la comparación del informe)
+En `docs/evidencia/experimento_frameworks/` está la misma prueba escrita con unittest, pytest y nose2. Las instrucciones y los comandos están en `LEEME.md`. `test_error_intencional` falla a propósito; no se ejecuta con `pytest` a secas porque `pytest.ini` solo busca en `tests/`.
+
+## Estructura
+```
+tests/            pruebas (un archivo por clase, nombres test_*.py)
+docs/             plan de pruebas, tarjetas del board y evidencia/ (salidas reales de las herramientas)
+pytest.ini        configuración de pytest
+.coveragerc       configuración de coverage.py
+```

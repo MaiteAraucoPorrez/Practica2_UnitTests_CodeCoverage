@@ -1,0 +1,123 @@
+EVIDENCIA: la MISMA prueba escrita con cuatro herramientas sobre Pawn.validate_move (e2 -> e4, tablero vacío).
+En cada archivo hay una prueba correcta y una con resultado esperado equivocado a propósito, para comparar el mensaje de fallo.
+Entorno: Python 3.12, pytest 9.x, nose2, hypothesis 6.168. Archivos en cmp/ (copia del experimento).
+
+==============================================================================
+1) unittest (librería estándar)
+==============================================================================
+$ python3 -m unittest test_unittest_style
+F.
+======================================================================
+FAIL: test_error_intencional (test_unittest_style.TestPawn.test_error_intencional)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/fw/cmp/test_unittest_style.py", line 14, in test_error_intencional
+    self.assertEqual(self.pawn.validate_move("e2", "e4", self.board), False)
+AssertionError: True != False
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.001s
+
+FAILED (failures=1)
+(duración: 0.05 s)
+
+==============================================================================
+2) pytest
+==============================================================================
+$ python3 -m pytest test_pytest_style.py -q
+.F                                                                       [100%]
+=================================== FAILURES ===================================
+____________________________ test_error_intencional ____________________________
+
+board = {'a1': None, 'a2': None, 'a3': None, 'a4': None, ...}
+
+    def test_error_intencional(board):
+        resultado = Pawn(True).validate_move("e2", "e4", board)
+>       assert resultado == False   # esperamos False a propósito
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       assert True == False
+
+test_pytest_style.py:13: AssertionError
+=========================== short test summary info ============================
+FAILED test_pytest_style.py::test_error_intencional - assert True == False
+1 failed, 1 passed in 0.16s
+(duración: 0.39 s)
+
+$ python3 -m pytest test_param_pytest.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /usr/bin/python3
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /tmp/fw
+configfile: pyproject.toml
+plugins: cov-7.1.0, hypothesis-6.168.5
+collecting ... collected 3 items
+
+test_param_pytest.py::test_peon_primer_movimiento[1-paso] PASSED         [ 33%]
+test_param_pytest.py::test_peon_primer_movimiento[2-pasos] PASSED        [ 66%]
+test_param_pytest.py::test_peon_primer_movimiento[3-pasos] PASSED        [100%]
+
+============================== 3 passed in 0.17s ===============================
+(duración: 0.42 s)
+
+==============================================================================
+3) nose2 (con --pretty-assert)
+==============================================================================
+$ python3 -m nose2 -v --pretty-assert test_nose2_style
+test_nose2_style.test_error_intencional ... FAIL
+test_nose2_style.test_primer_movimiento_dos_pasos ... ok
+
+======================================================================
+FAIL: test_nose2_style.test_error_intencional
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/fw/cmp/test_nose2_style.py", line 8, in test_error_intencional
+    assert resultado == False   # esperamos False a propósito
+           ^^^^^^^^^^^^^^^^^^
+AssertionError
+
+>>> assert resultado == False   # esperamos False a propósito
+
+values:
+    resultado = True
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+FAILED (failures=1)
+(duración: 0.10 s)
+
+==============================================================================
+4) Hypothesis (propiedades sobre get_path, Knight y King)
+==============================================================================
+$ python3 -m pytest tests/test_properties.py -q --hypothesis-show-statistics
+...                                                                      [100%]
+============================ Hypothesis Statistics =============================
+tests/test_properties.py::test_get_path_propiedades:
+
+  - during generate phase (0.08 seconds):
+    - Typical runtimes: < 1ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+tests/test_properties.py::test_caballo_en_tablero_vacio_solo_mueve_en_L:
+
+  - during generate phase (0.09 seconds):
+    - Typical runtimes: < 1ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+tests/test_properties.py::test_rey_en_tablero_vacio_solo_mueve_una_casilla:
+
+  - during generate phase (0.07 seconds):
+    - Typical runtimes: < 1ms, of which < 1ms in data generation
+    - 100 passing, 0 failing, and 0 invalid test cases
+
+  - Stopped because settings.max_examples=100
+
+
+3 passed in 0.29s
+(duración: 0.68 s)
