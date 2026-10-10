@@ -11,4 +11,4 @@ wheels/
 .coverage
 htmlcov/
 .pytest_cache/
-.hypothesis/
+.hypothesis/*.cover
