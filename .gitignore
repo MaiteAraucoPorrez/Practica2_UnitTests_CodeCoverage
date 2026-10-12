@@ -12,3 +12,4 @@ wheels/
 htmlcov/
 .pytest_cache/
 .hypothesis/*.cover
+.hypothesis/
