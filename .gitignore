@@ -13,3 +13,9 @@ htmlcov/
 .pytest_cache/
 .hypothesis/*.cover
 .hypothesis/
+
+# SonarQube
+.scannerwork/
+
+# Coverage
+coverage.xml
