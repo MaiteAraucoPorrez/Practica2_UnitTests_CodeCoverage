@@ -66,12 +66,16 @@ def test_bm2_init_pieces_posicion_inicial(new_board):
         blanca = new_board.board[f"{archivo}1"]
         negra = new_board.board[f"{archivo}8"]
 
-        assert type(blanca) is clase and blanca.is_white is True
-        assert type(negra) is clase and negra.is_white is False
+        assert type(blanca) is clase
+        assert blanca.is_white is True
+        assert type(negra) is clase
+        assert negra.is_white is False
 
     for archivo in FILES:
-        assert type(new_board.board[f"{archivo}2"]) is Pawn and new_board.board[f"{archivo}2"].is_white
-        assert type(new_board.board[f"{archivo}7"]) is Pawn and not new_board.board[f"{archivo}7"].is_white
+        assert type(new_board.board[f"{archivo}2"]) is Pawn
+        assert new_board.board[f"{archivo}2"].is_white
+        assert type(new_board.board[f"{archivo}7"]) is Pawn
+        assert not new_board.board[f"{archivo}7"].is_white
 
 
 def test_bm3_init_pieces_llena_las_filas_3_a_6_con_space(new_board):
