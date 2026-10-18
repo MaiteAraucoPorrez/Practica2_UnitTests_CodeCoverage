@@ -243,3 +243,63 @@ def test_bm4_validate_piece_move(new_board):
 def test_validate_piece_posicion_inexistente(new_board):
     with pytest.raises(KeyError):
         new_board.validate_piece(True, "z9")
+
+
+# ===================== TC-BM5 · Movimiento normal =====================
+
+def test_bm5_move_piece_actualiza_tablero(new_board, capsys):
+    # Arrange: guardar la referencia al peón original
+    peon_blanco = new_board.board["e2"]
+
+    assert isinstance(peon_blanco, Pawn)
+    assert new_board.check_king_exist() is True
+
+    # Act: mover el peón de e2 a e4
+    new_board.move_piece(True, "e2", "e4")
+
+    # Assert 1: el peón llegó a e4
+    assert new_board.board["e4"] is peon_blanco
+
+    # Assert 2: e2 quedó como una casilla vacía
+    assert isinstance(new_board.board["e2"], Space)
+    assert new_board.board["e2"].is_white is True
+
+    # Assert 3: el tablero fue impreso
+    output = capsys.readouterr().out
+    lineas = output.splitlines()
+
+    assert len(lineas) == 9
+    assert lineas[3].startswith("4")
+
+    # Assert 4: ningún rey fue capturado
+    assert new_board.check_king_exist() is True
+
+
+# ===================== TC-BM6 · Captura del rey =====================
+
+def test_bm6_move_piece_detecta_captura_rey(new_board, capsys):
+    # Arrange: colocar un rey negro en e4
+    rey_negro = King(False)
+    new_board.board["e4"] = rey_negro
+
+    peon_blanco = new_board.board["e2"]
+
+    assert isinstance(peon_blanco, Pawn)
+    assert new_board.check_king_exist() is True
+
+    # Act: mover el peón hacia la casilla del rey
+    # Se prueba move_piece directamente, no la legalidad del movimiento
+    new_board.move_piece(True, "e2", "e4")
+
+    # Assert 1: el peón ocupa la casilla del rey capturado
+    assert new_board.board["e4"] is peon_blanco
+
+    # Assert 2: el origen queda vacío
+    assert isinstance(new_board.board["e2"], Space)
+
+    # Assert 3: el programa detectó la captura del rey
+    assert new_board.check_king_exist() is False
+
+    # Assert 4: el tablero se imprimió
+    output = capsys.readouterr().out
+    assert len(output.splitlines()) == 9
